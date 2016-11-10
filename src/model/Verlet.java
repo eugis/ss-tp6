@@ -27,7 +27,9 @@ public class Verlet {
 				.add(new EscapeParticle(0, EscapeRunner.W / 2 - EscapeRunner.D / 2, EscapeRunner.fall, 0, 0, 0, 0));
 		vertexParticles
 				.add(new EscapeParticle(0, EscapeRunner.W / 2 + EscapeRunner.D / 2, EscapeRunner.fall, 0, 0, 0, 0));
-		cim = new CellIndexMethod<VerletParticle>(particles, EscapeRunner.L + EscapeRunner.fall, 1.6, 1, false);
+		double e_max = 0.8;
+		int m = (int)((EscapeRunner.L + EscapeRunner.fall)/(e_max+0.6));
+		cim = new CellIndexMethod<VerletParticle>(particles, EscapeRunner.L + EscapeRunner.fall, m, e_max, false);
 		toRemove = new LinkedList<VerletParticle>();
 	}
 
@@ -68,6 +70,14 @@ public class Verlet {
 
 	private Point wallForce(VerletParticle p) {
 		Point sum = new Point(0, 0);
+		double e;
+		e = p.getX()-p.getRadius();
+		if(e<0.8) sum.add(ForcesUtils.getSocialForce(new Point(1,0), e));
+		e = EscapeRunner.W - p.getX()+p.getRadius();
+		if(e<0.8) sum.add(ForcesUtils.getSocialForce(new Point(-1,0), e));
+		e = p.getY()-p.getRadius()-EscapeRunner.fall;
+		if(e+p.getRadius()>0 && e<0.8 && !inGap(p)) sum.add(ForcesUtils.getSocialForce(new Point(0,1), e));
+		
 		if (p.position.x - p.getRadius() < 0 && p.position.y > EscapeRunner.fall) {
 			Point[] force = ForcesUtils.wallLeftForce(p);
 			sum.add(Point.sum(force[0], force[1]));
