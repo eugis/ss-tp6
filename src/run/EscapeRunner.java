@@ -15,19 +15,22 @@ public class EscapeRunner {
 
 	private double time;
 	static public double W = 15.0, L = 15.0, D = 1.0, fall = 1.0;
-	static public double drivingV = 2.0;
+	static public double drivingV = 0.8;
 	static final public double Kn = 1.2e5, Kt = 2.4e5;
 	static final public double A = 2000, B = 0.08;
 	private int N = 200;
 	static final public double tau = 0.5;
 	private int idCounter = 1;
-	private final double mass = 50;
+	private final double mass = 80;
 	private final double maxTime = 5.0;
 	private final double dt = 1e-4;
 	private final double dt2 = 1.0 / 250;
+	private int seed;
 
-	public EscapeRunner() {
-		RandomUtils.setSeed(1234);
+	public EscapeRunner(int seed, double drivingV) {
+		this.seed = seed;
+		RandomUtils.setSeed(seed);
+		EscapeRunner.drivingV = drivingV;
 		this.run();
 	}
 
@@ -58,8 +61,8 @@ public class EscapeRunner {
 	}
 
 	private void run() {
-		OutputXYZFilesGenerator outputXYZFilesGenerator = new OutputXYZFilesGenerator("animation/", "state");
-		OutputFileGenerator caudal = new OutputFileGenerator("animation/", "caudal");
+//		OutputXYZFilesGenerator outputXYZFilesGenerator = new OutputXYZFilesGenerator("animation/", "state");
+		OutputFileGenerator caudal = new OutputFileGenerator("animation/", "caudal_100_" + drivingV + "_" + seed);
 		List<VerletParticle> particles = createParticles(N);
 		Verlet v = new Verlet(particles, dt);
 		time = 0;
@@ -69,7 +72,7 @@ public class EscapeRunner {
 
 		while (totalCaudal < N) {
 			if (lastTime + dt2 < time) {
-				outputXYZFilesGenerator.printState(particles);
+//				outputXYZFilesGenerator.printState(particles);
 				double mp = particles.stream().mapToDouble(x -> x.getPressure()).max().getAsDouble();
 				if (maxPressure < mp) {
 					maxPressure = mp;
@@ -84,7 +87,7 @@ public class EscapeRunner {
 			}
 			time += dt;
 		}
-		System.out.println("Time: " + time);
+//		System.out.println("Time: " + time);
 		caudal.writeFile();
 	}
 

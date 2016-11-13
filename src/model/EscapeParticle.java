@@ -47,7 +47,7 @@ public class EscapeParticle extends VerletParticle {
 	private Point getSocialForce(Particle p) {
 		Point dir = Point.sub(position, p.position);
 		double e = dir.abs() - p.getRadius() - getRadius();
-		if (e > 0.8) {
+		if (e > 0.5) {
 			return new Point (0, 0); // Ya no cuenta (habría que analizar si no se puede cortar antes el sistema)
 		}
 		dir.normalize();

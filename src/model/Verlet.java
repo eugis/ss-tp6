@@ -72,11 +72,11 @@ public class Verlet {
 		Point sum = new Point(0, 0);
 		double e;
 		e = p.getX()-p.getRadius();
-		if(e<0.8) sum.add(ForcesUtils.getSocialForce(new Point(1,0), e));
+		if(e<0.5) sum.add(ForcesUtils.getSocialForce(new Point(1,0), e));
 		e = EscapeRunner.W - p.getX()+p.getRadius();
-		if(e<0.8) sum.add(ForcesUtils.getSocialForce(new Point(-1,0), e));
+		if(e<0.5) sum.add(ForcesUtils.getSocialForce(new Point(-1,0), e));
 		e = p.getY()-p.getRadius()-EscapeRunner.fall;
-		if(e+p.getRadius()>0 && e<0.8 && !inGap(p)) sum.add(ForcesUtils.getSocialForce(new Point(0,1), e));
+		if(e+p.getRadius()>0 && e<0.5 && !inGap(p)) sum.add(ForcesUtils.getSocialForce(new Point(0,1), e));
 		
 		if (p.position.x - p.getRadius() < 0 && p.position.y > EscapeRunner.fall) {
 			Point[] force = ForcesUtils.wallLeftForce(p);
