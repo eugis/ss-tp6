@@ -19,12 +19,9 @@ public class CellIndexMethod <T extends Particle> {
 	private int m;
 	private double l;
 	
-	//OJO
-	public CellIndexMethod(List<T> particle, double l, double cellLength, double rc, boolean periodicBounds){
-		this(particle, l, (int)Math.ceil(l/cellLength), rc, periodicBounds);
-	}
 	
-	private CellIndexMethod(List<T> particles, double l, int m, double rc, boolean periodicBounds) {
+	
+	public CellIndexMethod(List<T> particles, double l, int m, double rc, boolean periodicBounds) {
 		cellLength = l / m;
 		this.l = l;
 		this.m = m;
@@ -154,6 +151,7 @@ public class CellIndexMethod <T extends Particle> {
 				}
 			}
 		}
+		
 		return (cellLength >= rc + max1 + max2);
 	}
 	
